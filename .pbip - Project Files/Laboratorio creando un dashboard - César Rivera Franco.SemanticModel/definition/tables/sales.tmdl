@@ -1,0 +1,164 @@
+table sales
+	lineageTag: b3860966-d71f-407c-906e-760f7618910c
+
+	measure 'Total Sales' = COUNTROWS(sales)
+		formatString: 0
+		lineageTag: d5d909ab-a467-4a2e-8f48-1d056272f514
+
+	column Store
+		dataType: int64
+		formatString: 0
+		lineageTag: 4d58af71-d998-46f6-8ca4-52cba65028f2
+		summarizeBy: none
+		sourceColumn: Store
+
+		annotation SummarizationSetBy = Automatic
+
+	column Dept
+		dataType: int64
+		formatString: 0
+		lineageTag: 9989ec8e-ddf7-421d-a4bb-1ee10f9c3913
+		summarizeBy: sum
+		sourceColumn: Dept
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 1c65bb00-47ef-40ef-b332-a82a5c1f70a9
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: e323bb90-954d-4393-aef7-89491698b492
+			defaultHierarchy: LocalDateTable_ea61a15e-7b49-4c5d-89ae-742a5bf50544.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Weekly_Sales
+		dataType: double
+		lineageTag: 7c9629bc-5d72-44e8-865a-8af4dca5d0fd
+		summarizeBy: sum
+		sourceColumn: Weekly_Sales
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column IsHoliday
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: a85453a2-77c2-4e20-aa56-d2e61a0170f7
+		summarizeBy: none
+		sourceColumn: IsHoliday
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day Name'
+		dataType: string
+		lineageTag: bcb1d080-0019-4d30-a75f-ab65fe88505e
+		summarizeBy: none
+		sourceColumn: Day Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Start of Week'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 0b0dcc79-d529-4717-8b01-c7bc8631d779
+		summarizeBy: none
+		sourceColumn: Start of Week
+
+		variation Variation
+			isDefault
+			relationship: f2850c02-8fb4-4f14-811b-1f886a1ee9de
+			defaultHierarchy: LocalDateTable_9a69fd90-248e-484b-b688-bf540eed7bc0.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Start of Month'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: aa59d4f5-28eb-47e9-936a-c9e5ec55d3e2
+		summarizeBy: none
+		sourceColumn: Start of Month
+
+		variation Variation
+			isDefault
+			relationship: 2b460a79-33fe-40af-9eef-38fee8a559af
+			defaultHierarchy: LocalDateTable_5689b600-4725-4688-8d1f-a260edfcb2a9.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Month Name'
+		dataType: string
+		lineageTag: 5624a88e-1737-40dd-a6e6-eb4d82e908ee
+		summarizeBy: none
+		sourceColumn: Month Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Positive & Negative Sales'
+		dataType: string
+		lineageTag: db2a94c6-b8b0-45f8-9473-c16807583ee5
+		summarizeBy: none
+		sourceColumn: Positive & Negative Sales
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: string
+		lineageTag: 08b903b8-a74a-47d3-b930-408dcb7ff0a3
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Weekly_Sales - Copy'
+		dataType: string
+		lineageTag: 9b53c39e-cbf5-4696-ae98-042bf886189d
+		summarizeBy: none
+		sourceColumn: Weekly_Sales - Copy
+
+		annotation SummarizationSetBy = Automatic
+
+	partition sales-98744da7-b171-4104-8f2b-1a381f634226 = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Dell\Desktop\unir\Tercer Semestre\Herramientas de Visualización\Laboratorio Creando un dashboard\Retail\sales.csv"),[Delimiter=",", Columns=5, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Store", Int64.Type}, {"Dept", Int64.Type}, {"Date", type date}, {"Weekly_Sales", type number}, {"IsHoliday", type logical}}),
+				    #"Inserted Day Name" = Table.AddColumn(#"Changed Type", "Day Name", each Date.DayOfWeekName([Date]), type text),
+				    #"Inserted Start of Week" = Table.AddColumn(#"Inserted Day Name", "Start of Week", each Date.StartOfWeek([Date]), type date),
+				    #"Inserted Start of Month" = Table.AddColumn(#"Inserted Start of Week", "Start of Month", each Date.StartOfMonth([Date]), type date),
+				    #"Inserted Month Name" = Table.AddColumn(#"Inserted Start of Month", "Month Name", each Date.MonthName([Date]), type text),
+				    #"Inserted Year" = Table.AddColumn(#"Inserted Month Name", "Year", each Date.Year([Date]), Int64.Type),
+				    #"Capitalized Each Word" = Table.TransformColumns(#"Inserted Year",{{"Day Name", Text.Proper, type text}, {"Month Name", Text.Proper, type text}}),
+				    #"Added Conditional Column" = Table.AddColumn(#"Capitalized Each Word", "Positive Sales", each if [Weekly_Sales] > 1 then "Posive Sale" else "Negative Sale"),
+				    #"Duplicated Column" = Table.DuplicateColumn(#"Added Conditional Column", "Weekly_Sales", "Weekly_Sales - Copy"),
+				    #"Removed Columns" = Table.RemoveColumns(#"Duplicated Column",{"Weekly_Sales - Copy"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Removed Columns",{{"Positive Sales", "Positive & Negative Sales"}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Renamed Columns","Posive","Positive",Replacer.ReplaceText,{"Positive & Negative Sales"}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","Negative","Negative",Replacer.ReplaceText,{"Positive & Negative Sales"}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Replaced Value1",{{"Year", type date}}),
+				    #"Removed Columns1" = Table.RemoveColumns(#"Changed Type1",{"Year"}),
+				    #"Inserted Last Characters" = Table.AddColumn(#"Removed Columns1", "Last Characters", each Text.End(Text.From([Date], "es-MX"), 4), type text),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Inserted Last Characters",{{"Last Characters", "Year"}}),
+				    #"Duplicated Column1" = Table.DuplicateColumn(#"Renamed Columns1", "Weekly_Sales", "Weekly_Sales - Copy"),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Duplicated Column1",{{"Weekly_Sales - Copy", type text}})
+				in
+				    #"Changed Type2"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

@@ -1,0 +1,59 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 256.233584806231,
+            "y": 17
+          },
+          "nodeIndex": "stores",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 554.46641519376908,
+            "y": 130.07582813091017
+          },
+          "nodeIndex": "features",
+          "size": {
+            "height": 373.4035423085528,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 34.899999999999977,
+            "y": 206
+          },
+          "nodeIndex": "sales",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 2,
+          "expandedHeight": 200
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 86.67841720414475,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

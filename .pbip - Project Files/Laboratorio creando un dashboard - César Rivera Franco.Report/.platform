@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Laboratorio creando un dashboard - César Rivera Franco"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "6097febd-c853-46b5-bfae-544ab6cba986"
+  }
+}

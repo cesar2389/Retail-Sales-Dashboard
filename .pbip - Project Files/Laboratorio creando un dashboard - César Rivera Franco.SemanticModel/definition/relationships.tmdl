@@ -1,0 +1,28 @@
+relationship 7d86c751-7664-463f-99ca-0b71d4862345
+	joinOnDateBehavior: datePartOnly
+	fromColumn: features.Date
+	toColumn: LocalDateTable_56c38b1d-bcdd-4ec4-af5f-964f7c8f7534.Date
+
+relationship 302166c3-af8b-4387-bf7b-ade079992b8f
+	fromColumn: features.Store
+	toColumn: stores.Store
+
+relationship e323bb90-954d-4393-aef7-89491698b492
+	joinOnDateBehavior: datePartOnly
+	fromColumn: sales.Date
+	toColumn: LocalDateTable_ea61a15e-7b49-4c5d-89ae-742a5bf50544.Date
+
+relationship 32400b00-6482-4650-a0f3-f283dd7d7c6d
+	fromColumn: sales.Store
+	toColumn: stores.Store
+
+relationship f2850c02-8fb4-4f14-811b-1f886a1ee9de
+	joinOnDateBehavior: datePartOnly
+	fromColumn: sales.'Start of Week'
+	toColumn: LocalDateTable_9a69fd90-248e-484b-b688-bf540eed7bc0.Date
+
+relationship 2b460a79-33fe-40af-9eef-38fee8a559af
+	joinOnDateBehavior: datePartOnly
+	fromColumn: sales.'Start of Month'
+	toColumn: LocalDateTable_5689b600-4725-4688-8d1f-a260edfcb2a9.Date
+

@@ -1,0 +1,41 @@
+table stores
+	lineageTag: 8ecae95c-8e4f-4a93-81ef-4e84a224e9d0
+
+	column Store
+		dataType: int64
+		formatString: 0
+		lineageTag: 0b6f10bf-625f-4f56-a837-7bac1d70fb10
+		summarizeBy: none
+		sourceColumn: Store
+
+		annotation SummarizationSetBy = Automatic
+
+	column Type
+		dataType: string
+		lineageTag: f2522d16-ca26-42ed-ad0e-74da6be3aea1
+		summarizeBy: none
+		sourceColumn: Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Size
+		dataType: int64
+		formatString: 0
+		lineageTag: 334a61c6-4ae7-4d42-9c18-6415aa3440fb
+		summarizeBy: sum
+		sourceColumn: Size
+
+		annotation SummarizationSetBy = Automatic
+
+	partition stores-c26e624b-acfa-487a-9c3f-e8479e50ba56 = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Dell\Desktop\unir\Tercer Semestre\Herramientas de Visualización\Laboratorio Creando un dashboard\Retail\stores.csv"),[Delimiter=",", Columns=3, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Store", Int64.Type}, {"Type", type text}, {"Size", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

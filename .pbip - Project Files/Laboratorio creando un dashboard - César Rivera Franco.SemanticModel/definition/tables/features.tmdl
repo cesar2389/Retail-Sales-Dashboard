@@ -1,0 +1,124 @@
+table features
+	lineageTag: 8998ea33-acc4-4200-9cbf-8798df383aad
+
+	column Store
+		dataType: string
+		lineageTag: ece8c7d3-0586-4218-9054-49d3e3cfbcda
+		summarizeBy: none
+		sourceColumn: Store
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: efbd35ef-483f-4dc5-8769-2bb2d681001d
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: 7d86c751-7664-463f-99ca-0b71d4862345
+			defaultHierarchy: LocalDateTable_56c38b1d-bcdd-4ec4-af5f-964f7c8f7534.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Temperature
+		dataType: string
+		lineageTag: 81196a5c-1bdd-4763-8506-ac7b3f79a5ba
+		summarizeBy: none
+		sourceColumn: Temperature
+
+		annotation SummarizationSetBy = Automatic
+
+	column Fuel_Price
+		dataType: string
+		lineageTag: 5901dd1c-5b6e-48ef-bcee-8ac00d997de9
+		summarizeBy: none
+		sourceColumn: Fuel_Price
+
+		annotation SummarizationSetBy = Automatic
+
+	column MarkDown1
+		dataType: string
+		lineageTag: 57152fde-bed8-49db-bb49-0be533e277d0
+		summarizeBy: none
+		sourceColumn: MarkDown1
+
+		annotation SummarizationSetBy = Automatic
+
+	column MarkDown2
+		dataType: string
+		lineageTag: 9a53ab69-998c-448b-a447-cae9463575f0
+		summarizeBy: none
+		sourceColumn: MarkDown2
+
+		annotation SummarizationSetBy = Automatic
+
+	column MarkDown3
+		dataType: string
+		lineageTag: b06111f5-0007-4b8a-ae3a-f5e47b441eee
+		summarizeBy: none
+		sourceColumn: MarkDown3
+
+		annotation SummarizationSetBy = Automatic
+
+	column MarkDown4
+		dataType: string
+		lineageTag: 1ff36e43-75d6-4878-b314-8893f45b4242
+		summarizeBy: none
+		sourceColumn: MarkDown4
+
+		annotation SummarizationSetBy = Automatic
+
+	column MarkDown5
+		dataType: string
+		lineageTag: 12d65f3b-2c33-4d4a-aa9c-b430b92c7a91
+		summarizeBy: none
+		sourceColumn: MarkDown5
+
+		annotation SummarizationSetBy = Automatic
+
+	column CPI
+		dataType: string
+		lineageTag: 89f6ea73-f4d5-4fc3-8097-b47802f14aec
+		summarizeBy: none
+		sourceColumn: CPI
+
+		annotation SummarizationSetBy = Automatic
+
+	column Unemployment
+		dataType: string
+		lineageTag: b015d745-46f9-4792-9f0a-48e543d14c11
+		summarizeBy: none
+		sourceColumn: Unemployment
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsHoliday
+		dataType: string
+		lineageTag: d760c3f0-371a-431e-b8ce-930cf63c611d
+		summarizeBy: none
+		sourceColumn: IsHoliday
+
+		annotation SummarizationSetBy = Automatic
+
+	partition features-796f1fbb-57b2-4261-9e47-c6562c8d6162 = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Dell\Desktop\unir\Tercer Semestre\Herramientas de Visualización\Laboratorio Creando un dashboard\Retail\features.csv"),[Delimiter=",", Columns=12, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Date", type date}}),
+				    #"Inserted Day Name" = Table.AddColumn(#"Changed Type", "Day Name", each Date.DayOfWeekName([Date]), type text),
+				    #"Inserted Start of Week" = Table.AddColumn(#"Inserted Day Name", "Start of Week", each Date.StartOfWeek([Date]), type date),
+				    #"Removed Columns" = Table.RemoveColumns(#"Inserted Start of Week",{"Day Name", "Start of Week"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
